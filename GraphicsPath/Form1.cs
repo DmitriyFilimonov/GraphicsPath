@@ -20,6 +20,7 @@ namespace GraphicsPath
         }
 
         private Rectangle _rect;
+        private bool _mouseDown;
         
 
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
@@ -30,23 +31,31 @@ namespace GraphicsPath
 
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
+            _rect.Width = 0;
+            _rect.Height = 0;
+            _mouseDown = true;
             _rect.Location = e.Location;
+            
         }
 
         private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
 
-
-            pictureBox1.Invalidate(_rect);
-            _rect.Width = e.Location.X;
-            _rect.Height = e.Location.Y;
+            if (_mouseDown == true)
+            {
+                pictureBox1.Invalidate();
+                pictureBox1.Invalidate(_rect);
+                _rect.Width = e.Location.X - _rect.Location.X;
+                _rect.Height = e.Location.Y - _rect.Location.Y;
+            }
         }
 
         private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
         {
-            _rect.Width = e.Location.X;
-            _rect.Height = e.Location.Y;
+            _rect.Width = e.Location.X - _rect.Location.X;
+            _rect.Height = e.Location.Y - _rect.Location.Y;
             pictureBox1.Invalidate(_rect);
+            _mouseDown = false;
         }
     }
 }
