@@ -1,0 +1,10 @@
+C:\Users\Kate\source\repos\GraphicsPath\GraphicsPath\bin\Debug\GraphicsPath.exe.config
+C:\Users\Kate\source\repos\GraphicsPath\GraphicsPath\bin\Debug\GraphicsPath.exe
+C:\Users\Kate\source\repos\GraphicsPath\GraphicsPath\bin\Debug\GraphicsPath.pdb
+C:\Users\Kate\source\repos\GraphicsPath\GraphicsPath\obj\Debug\GraphicsPath.csprojAssemblyReference.cache
+C:\Users\Kate\source\repos\GraphicsPath\GraphicsPath\obj\Debug\GraphicsPath.Form1.resources
+C:\Users\Kate\source\repos\GraphicsPath\GraphicsPath\obj\Debug\GraphicsPath.Properties.Resources.resources
+C:\Users\Kate\source\repos\GraphicsPath\GraphicsPath\obj\Debug\GraphicsPath.csproj.GenerateResource.cache
+C:\Users\Kate\source\repos\GraphicsPath\GraphicsPath\obj\Debug\GraphicsPath.csproj.CoreCompileInputs.cache
+C:\Users\Kate\source\repos\GraphicsPath\GraphicsPath\obj\Debug\GraphicsPath.exe
+C:\Users\Kate\source\repos\GraphicsPath\GraphicsPath\obj\Debug\GraphicsPath.pdb
