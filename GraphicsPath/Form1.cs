@@ -36,6 +36,8 @@ namespace GraphicsPath
         //само событие вызывается методом pictureBox1.Invalidate();
         //в свою очередь pictureBox1.Invalidate(); вызывается в MouseMove при MouseDown
         //e.Graphics - это "системный" графикс, который хранится в объекте события Paint
+        //само событие Paint можно считать событием "смены кадра", момент, когда изменяется изображение
+        //оно случается, например, при загрузке форм, т. е. при запуске приложений, переходах между вкладками, раскрытии контекстных меню и т. д.
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
         {
             e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;//включаем сглаживание на временной прорисовке
