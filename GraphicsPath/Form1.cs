@@ -35,7 +35,7 @@ namespace GraphicsPath
         //вместо Canvas.DrawIt - метод вызываемый событием пикчербокса Paint
         //само событие искуственно вызывается методом pictureBox1.Invalidate();
         //в свою очередь pictureBox1.Invalidate(); вызывается в MouseMove при MouseDown
-        //e.Graphics - это "системный" графикс, который хранится в объекте события Paint
+        //e.Graphics - это "системный" графикс, который хранится в объекте, создаваемом событием Paint
         //само событие Paint можно считать событием "смены кадра", момент, когда изменяется изображение
         //оно случается само по себе, например, при загрузке форм, т. е. при запуске приложений, переходах между вкладками, раскрытии контекстных меню и т. д.
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
@@ -45,7 +45,7 @@ namespace GraphicsPath
             e.Graphics.DrawImage(_mainBitmap, new Point(0,0));
         }
 
-        //NouseMove, где вызывается Invalidate
+        //NouseMove, где вызывается Invalidate, в свою очередь который вызывает событие Paint
         //
         //pictureBox1.Invalidate(_rect) с аргументом передаёт область которую нужно перерисовать, в объект события Paint
         //
@@ -82,7 +82,7 @@ namespace GraphicsPath
         //который уже хранит все предыдущие растрированные фигуры
         private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
         {
-            _graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+            _graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;//просто украшалка
             _graphics.DrawPolygon(new Pen(Color.Blue, 5), new PointF[] { _rect.Location, new PointF(_rect.Location.X + _rect.Width, _rect.Location.Y + _rect.Height) });
             _mouseDown = false;
         }
