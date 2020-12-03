@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="figures\IFigure.cs" />
     <Compile Include="figures\Line.cs">
       <SubType>Component</SubType>
     </Compile>

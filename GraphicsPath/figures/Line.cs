@@ -3,21 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
-
-
 using System.Drawing;
-
-using System.Windows.Forms;
 
 
 
 namespace GraphicsPath.figures
 {
-    public class Line
+    public class Line //: IFigure
     {
         public Rectangle _rect;
-        public bool InLine(PointF point)
+
+        //Rectangle IFigure._rect.X { get; set; }
+
+        public bool InTarget(PointF point)
         {
             if (
                     (

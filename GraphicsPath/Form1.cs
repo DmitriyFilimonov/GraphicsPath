@@ -28,10 +28,12 @@ namespace GraphicsPath
 
         private List<PointF> _marker;
 
-        private Line _line;
+        private Line _currentFigure;//заменить на IFigure
         private bool _lineMouseDown;
 
         int _lineCounter = 0;
+
+        private List<Line> _figuresList;
 
 
         //загрузка формы
@@ -40,7 +42,8 @@ namespace GraphicsPath
             _mainBitmap = new Bitmap(pictureBox1.Width, pictureBox1.Height);
             _graphics = Graphics.FromImage(_mainBitmap);//указываем нашему графиксу, где рисовать
             _marker = new List<PointF>();
-            _line = new Line();
+            _figuresList = new List<Line>();
+            
             
         }
 
@@ -53,7 +56,7 @@ namespace GraphicsPath
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
         {
             e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;//включаем сглаживание на временной прорисовке
-            e.Graphics.DrawPolygon(new Pen(Color.Blue, 5),  new PointF[] { _line._rect.Location, new PointF(_line._rect.Location.X + _line._rect.Width, _line._rect.Location.Y + _line._rect.Height) });
+            if (_figuresList.Count>0) e.Graphics.DrawLine(new Pen(Color.Blue, 5), _currentFigure._rect.Location, new PointF(_currentFigure._rect.Location.X + _currentFigure._rect.Width, _currentFigure._rect.Location.Y + _currentFigure._rect.Height) );
             e.Graphics.DrawImage(_mainBitmap, new Point(0,0));
         }
 
@@ -72,17 +75,20 @@ namespace GraphicsPath
                 pictureBox1.Invalidate();
 
                 //получение точек для новой прорисовки
-                _line._rect.Width = e.Location.X - _line._rect.Location.X;
-                _line._rect.Height = e.Location.Y - _line._rect.Location.Y;
+                _currentFigure._rect.Width = e.Location.X - _currentFigure._rect.Location.X;
+                _currentFigure._rect.Height = e.Location.Y - _currentFigure._rect.Location.Y;
                 
                 //прорисовка текущего движения мыши
-                pictureBox1.Invalidate(_line._rect);//прорисовка 
+                pictureBox1.Invalidate(_currentFigure._rect);//прорисовка 
             }
             else
             {
-                if ((_line.InLine(e.Location) ==true))
+                if ((_figuresList.Count > 0)&&(_currentFigure.InTarget(e.Location) ==true))
                 {
                     this.UseWaitCursor = true;
+                    pictureBox1.Invalidate();
+                    _currentFigure._rect.Location = e.Location;
+                    pictureBox1.Invalidate(_currentFigure._rect);
                 }
                 else
                 {
@@ -94,10 +100,17 @@ namespace GraphicsPath
         //"сброс" фигуры, отслеживание MoouseDown
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
-            _line._rect.Width = 0;
-            _line._rect.Height = 0;
+            _currentFigure = new Line();
+            _figuresList.Add(_currentFigure);
+
             _mouseDown = true;
-            _line._rect.Location = e.Location;//установка начала построения
+
+            _currentFigure._rect.Width = 0;
+            _currentFigure._rect.Height = 0;
+            
+            _currentFigure._rect.Location = e.Location;//установка начала построения
+            
+            
         }
 
         //_graphics рисует последнюю фигуру на связанном с ним (стр. 32) битмапе,
@@ -106,12 +119,12 @@ namespace GraphicsPath
         {
             _mouseDown = false;
             _graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;//просто украшалка
-            _graphics.DrawPolygon(new Pen(Color.Blue, 5), new PointF[] { _line._rect.Location, new PointF(_line._rect.Location.X + _line._rect.Width, _line._rect.Location.Y + _line._rect.Height) });
+            _graphics.DrawPolygon(new Pen(Color.Blue, 5), new PointF[] { _currentFigure._rect.Location, new PointF(_currentFigure._rect.Location.X + _currentFigure._rect.Width, _currentFigure._rect.Location.Y + _currentFigure._rect.Height) });
             _lineCounter++;
 
-            //создать точки, которые будут иметь MouseOver
-            _marker.Add(_line._rect.Location);
-            _marker.Add(new PointF(_line._rect.Location.X + _line._rect.Width, _line._rect.Location.Y + _line._rect.Height));
+            ////создать точки, которые будут иметь MouseOver
+            //_marker.Add(_figure._rect.Location);
+            //_marker.Add(new PointF(_figure._rect.Location.X + _figure._rect.Width, _figure._rect.Location.Y + _figure._rect.Height));
         }
 
         
