@@ -29,6 +29,7 @@ namespace GraphicsPath
         private List<PointF> _marker;
 
         private Line _line;
+        private bool _lineMouseDown;
 
 
         //загрузка формы
@@ -38,6 +39,37 @@ namespace GraphicsPath
             _graphics = Graphics.FromImage(_mainBitmap);//указываем нашему графиксу, где рисовать
             _marker = new List<PointF>();
             _line = new Line();
+            _line.MouseDown += _line_MouseDown;
+            _line.MouseMove += _line_MouseMove;
+            _line.MouseUp += _line_MouseUp;
+            _line.MouseHover += _line_MouseHover;
+            _line.MouseEnter += new EventHandler(_line_MouseEnter);
+        }
+
+        private void _line_MouseEnter(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void _line_MouseHover(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void _line_MouseUp(object sender, MouseEventArgs e)
+        {
+            _lineMouseDown = false;
+        }
+
+        private void _line_MouseMove(object sender, MouseEventArgs e)
+        {
+            _line._rect.Location=e.Location;
+        }
+
+        private void _line_MouseDown(object sender, MouseEventArgs e)
+        {
+            _lineMouseDown = true;
+            _mouseDown = false;
         }
 
         //вместо Canvas.DrawIt - метод вызываемый событием пикчербокса Paint
@@ -73,6 +105,13 @@ namespace GraphicsPath
                 
                 //прорисовка текущего движения мыши
                 pictureBox1.Invalidate(_line._rect);//прорисовка 
+            }
+            else
+            {
+                if (_line.InLine(e.Location) ==true)
+                {
+                    throw new Exception();
+                }
             }
         }
 
