@@ -31,6 +31,8 @@ namespace GraphicsPath
         private Line _line;
         private bool _lineMouseDown;
 
+        int _lineCounter = 0;
+
 
         //загрузка формы
         private void Form1_Load(object sender, EventArgs e)
@@ -39,37 +41,7 @@ namespace GraphicsPath
             _graphics = Graphics.FromImage(_mainBitmap);//указываем нашему графиксу, где рисовать
             _marker = new List<PointF>();
             _line = new Line();
-            _line.MouseDown += _line_MouseDown;
-            _line.MouseMove += _line_MouseMove;
-            _line.MouseUp += _line_MouseUp;
-            _line.MouseHover += _line_MouseHover;
-            _line.MouseEnter += new EventHandler(_line_MouseEnter);
-        }
-
-        private void _line_MouseEnter(object sender, EventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void _line_MouseHover(object sender, EventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void _line_MouseUp(object sender, MouseEventArgs e)
-        {
-            _lineMouseDown = false;
-        }
-
-        private void _line_MouseMove(object sender, MouseEventArgs e)
-        {
-            _line._rect.Location=e.Location;
-        }
-
-        private void _line_MouseDown(object sender, MouseEventArgs e)
-        {
-            _lineMouseDown = true;
-            _mouseDown = false;
+            
         }
 
         //вместо Canvas.DrawIt - метод вызываемый событием пикчербокса Paint
@@ -108,9 +80,13 @@ namespace GraphicsPath
             }
             else
             {
-                if (_line.InLine(e.Location) ==true)
+                if ((_line.InLine(e.Location) ==true))
                 {
-                    throw new Exception();
+                    this.UseWaitCursor = true;
+                }
+                else
+                {
+                    this.UseWaitCursor = false;
                 }
             }
         }
@@ -122,16 +98,16 @@ namespace GraphicsPath
             _line._rect.Height = 0;
             _mouseDown = true;
             _line._rect.Location = e.Location;//установка начала построения
-            
         }
 
         //_graphics рисует последнюю фигуру на связанном с ним (стр. 32) битмапе,
         //который уже хранит все предыдущие растрированные фигуры
         private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
         {
+            _mouseDown = false;
             _graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;//просто украшалка
             _graphics.DrawPolygon(new Pen(Color.Blue, 5), new PointF[] { _line._rect.Location, new PointF(_line._rect.Location.X + _line._rect.Width, _line._rect.Location.Y + _line._rect.Height) });
-            _mouseDown = false;
+            _lineCounter++;
 
             //создать точки, которые будут иметь MouseOver
             _marker.Add(_line._rect.Location);
